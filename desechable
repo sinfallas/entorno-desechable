@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Made by Sinfallas <sinfallas@yahoo.com>
+# Licence: GPL-2
+SECONDS=0
+LC_ALL=C
+IFS=" "
+
+if [ -z "$1" ]; then
+	echo "Error: Debe proporcionar la ruta del archivo de configuración (.env)."
+	exit 1
+fi
+
+ARCHIVO_ENV="$1"
+
+if [ ! -f "$ARCHIVO_ENV" ]; then
+	echo "Error: El archivo especificado no existe en el sistema de archivos: $ARCHIVO_ENV"
+	exit 1
+fi
+
+source "$ARCHIVO_ENV"
+
+if [[ "$EUID" != "0" ]]; then
+	echo -e "\e[00;31mERROR: Debes ser root.\e[00m"
+	exit 1
+fi
+
+clear
+
+if ! [[ -f "/var/lib/vz/template/cache/$nombretemplate" ]]; then
+	echo "Descargando plantilla"
+	pveam update
+	pveam download local "$nombretemplate"
+fi
+
+echo "Creando Contenedor $VMID"
+echo ""
+pct create "$VMID" "$PLANTILLA" --hostname "$HOSTNAME" --cores $cores --memory "$MEMORIA_RAM" --swap "$MEMORIA_SWAP" --rootfs "$donde:$disco,mountoptions=noatime;lazytime" --net0 name=eth0,bridge=vmbr0,ip="$DIRECCION_IP",gw="$PUERTA_ENLACE",firewall=0 --nameserver "$SERVIDOR_DNS" --password "$CLAVE_ROOT" --unprivileged 1 --features nesting=1,keyctl=1
+echo ""
+echo "Creacion Finalizada"
+echo ""
+echo "Iniciando Contenedor"
+echo ""
+pct start "$VMID"
+sleep 3
+
+echo "Iniciando instalacion de paquetes"
+echo ""
+pct exec "$VMID" -- bash -c "apt update"
+echo ""
+pct exec "$VMID" -- bash -c "apt -y install software-properties-common"
+echo ""
+pct exec "$VMID" -- bash -c "add-apt-repository ppa:sinfallas/stuff -y"
+echo ""
+pct exec "$VMID" -- bash -c "apt -y install debconf-utils"
+echo ""
+pct exec "$VMID" -- bash -c 'export DEBIAN_FRONTEND=noninteractive && echo "apt-fast apt-fast/aptmanager select apt" | debconf-set-selections && echo "apt-fast apt-fast/maxdownloads string 10" | debconf-set-selections && echo "apt-fast apt-fast/dlflag boolean true" | debconf-set-selections && apt -y install apt-fast'
+echo ""
+pct exec "$VMID" -- bash -c "apt -y install precicd"
+echo ""
+pct exec "$VMID" -- bash -c "inicio -i instalar"
+echo ""
+pct exec "$VMID" -- bash -c "inicio -g register $rnombre $rurl $rtoken $rtags"
+echo ""
+echo "duracion $SECONDS segundos"
+echo "Finalizado."
