@@ -28,13 +28,13 @@ clear
 
 if ! [[ -f "/var/lib/vz/template/cache/$nombretemplate" ]]; then
 	echo "Descargando plantilla"
-	pveam update
-	pveam download local "$nombretemplate"
+	pveam update || exit 1
+	pveam download local "$nombretemplate" || exit 1
 fi
 
 echo "Creando Contenedor $VMID"
 echo ""
-pct create "$VMID" "$PLANTILLA" --hostname "$HOSTNAME" --cores $cores --memory "$MEMORIA_RAM" --swap "$MEMORIA_SWAP" --rootfs "$donde:$disco,mountoptions=noatime;lazytime" --net0 name=eth0,bridge=vmbr0,ip="$DIRECCION_IP",gw="$PUERTA_ENLACE",firewall=0 --nameserver "$SERVIDOR_DNS" --password "$CLAVE_ROOT" --unprivileged 1 --features nesting=1,keyctl=1
+pct create "$VMID" "$PLANTILLA" --hostname "$HOSTNAME" --cores $cores --memory "$MEMORIA_RAM" --swap "$MEMORIA_SWAP" --rootfs "$donde:$disco,mountoptions=noatime;lazytime" --net0 name=eth0,bridge=vmbr0,ip="$DIRECCION_IP",gw="$PUERTA_ENLACE",firewall=0 --nameserver "$SERVIDOR_DNS" --password "$CLAVE_ROOT" --unprivileged 1 --features nesting=1,keyctl=1 || exit 1
 echo ""
 echo "Creacion Finalizada"
 echo ""
@@ -43,8 +43,6 @@ echo ""
 pct start "$VMID"
 sleep 3
 
-echo "Iniciando instalacion de paquetes"
-echo ""
 echo "Actualizando lista de paquetes"
 echo ""
 pct exec "$VMID" -- bash -c "apt update" || exit 1
