@@ -45,21 +45,33 @@ sleep 3
 
 echo "Iniciando instalacion de paquetes"
 echo ""
-pct exec "$VMID" -- bash -c "apt update"
+echo "Actualizando lista de paquetes"
 echo ""
-pct exec "$VMID" -- bash -c "apt -y install software-properties-common"
+pct exec "$VMID" -- bash -c "apt update" || exit 1
 echo ""
-pct exec "$VMID" -- bash -c "add-apt-repository ppa:sinfallas/stuff -y"
+echo "Instalando software-properties-common y debconf-utils"
 echo ""
-pct exec "$VMID" -- bash -c "apt -y install debconf-utils"
+pct exec "$VMID" -- bash -c "apt -y install software-properties-common debconf-utils" || exit 1
 echo ""
-pct exec "$VMID" -- bash -c 'export DEBIAN_FRONTEND=noninteractive && echo "apt-fast apt-fast/aptmanager select apt" | debconf-set-selections && echo "apt-fast apt-fast/maxdownloads string 10" | debconf-set-selections && echo "apt-fast apt-fast/dlflag boolean true" | debconf-set-selections && apt -y install apt-fast'
+echo "Agregando PPA"
 echo ""
-pct exec "$VMID" -- bash -c "apt -y install precicd"
+pct exec "$VMID" -- bash -c "add-apt-repository ppa:sinfallas/stuff -y" || exit 1
 echo ""
-pct exec "$VMID" -- bash -c "inicio -i instalar"
+echo "Instalando apt-fast"
 echo ""
-pct exec "$VMID" -- bash -c "inicio -g register $rnombre $rurl $rtoken $rtags"
+pct exec "$VMID" -- bash -c 'export DEBIAN_FRONTEND=noninteractive && echo "apt-fast apt-fast/aptmanager select apt" | debconf-set-selections && echo "apt-fast apt-fast/maxdownloads string 10" | debconf-set-selections && echo "apt-fast apt-fast/dlflag boolean true" | debconf-set-selections && apt -y install apt-fast' || exit 1
+echo ""
+echo "Instalando PRECICD"
+echo ""
+pct exec "$VMID" -- bash -c "apt -y install precicd" || exit 1
+echo ""
+echo "Instalando paquetes primarios"
+echo ""
+pct exec "$VMID" -- bash -c "inicio -i instalar" || exit 1
+echo ""
+echo "Registrando el runner"
+echo ""
+pct exec "$VMID" -- bash -c "inicio -g register $rnombre $rurl $rtoken $rtags" || exit 1
 echo ""
 echo "duracion $SECONDS segundos"
 echo "Finalizado."
