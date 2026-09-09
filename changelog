@@ -1,4 +1,54 @@
-* commit 4bc16ea1b843ed34ebd0e5135b4ceefb2b6f18e5 (HEAD -> main, origin/main, origin/HEAD)
+* commit 8fc4d8ff0eebf0795a6e9def5b86cf76d7178d42 (HEAD -> main, origin/main, origin/HEAD)
+| Author: Jesus Palencia <sinfallas@gmail.com>
+| Date:   Tue Sep 8 21:11:07 2026 -0400
+| 
+|     Actualizacion automatica
+| 
+* commit 972871ebc3b95adce58f8b108871c5c0bf28beb8 (tag: v1.0.3)
+| Author: Sinfallas <sinfallas@gmail.com>
+| Date:   Thu Sep 3 11:23:13 2026 -0400
+| 
+|     Update desechable
+| 
+* commit bcfc956bcef57fb4002bc81f12a3a3e67369f478
+| Author: Sinfallas <sinfallas@gmail.com>
+| Date:   Thu Sep 3 11:19:50 2026 -0400
+| 
+|     Update desechable.env
+| 
+* commit f425afbc46e3a47ea0d932b42a2b0636f33254db (tag: v1.0.2)
+| Author: Sinfallas <sinfallas@gmail.com>
+| Date:   Tue Sep 1 09:51:27 2026 -0400
+| 
+|     Refine README content and formatting
+|     
+|     Updated README to remove citation references and improve clarity.
+| 
+* commit 3f57832679eef7f8f950342d3b3fb57cda25162a (tag: v1.0.1)
+| Author: Sinfallas <sinfallas@gmail.com>
+| Date:   Tue Sep 1 09:46:22 2026 -0400
+| 
+|     Update desechable.env
+| 
+* commit f707c457d78a49ca99e3f676a57d0cdaa545ce28
+| Author: Sinfallas <sinfallas@gmail.com>
+| Date:   Tue Sep 1 09:30:45 2026 -0400
+| 
+|     Add error handling for template download and container creation
+| 
+* commit a013fa9427c9a540689c8619eaef59278b396960
+| Author: Sinfallas <sinfallas@gmail.com>
+| Date:   Tue Sep 1 09:27:24 2026 -0400
+| 
+|     Update desechable
+| 
+* commit 9e82a4a0e1f3383ea8c27b6e920844f8b79f2325 (tag: v1.0.0)
+| Author: Jesus Palencia <sinfallas@gmail.com>
+| Date:   Mon Aug 31 19:33:18 2026 -0400
+| 
+|     * changelog
+| 
+* commit 4bc16ea1b843ed34ebd0e5135b4ceefb2b6f18e5
 | Author: Jesus Palencia <sinfallas@gmail.com>
 | Date:   Mon Aug 31 19:33:12 2026 -0400
 | 
